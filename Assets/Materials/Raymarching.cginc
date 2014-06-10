@@ -81,14 +81,14 @@ float3 genNormal(float3 p)
 
 float4 main(float2 pos)
 {
-    float time = _Time.x;
+    float time = _Time.x * 30.0;
     float aspect = _ScreenParams.x / _ScreenParams.y;
     float2 screen_pos = (pos+float2(1.0,1.0)) * 0.5 * _ScreenParams.xy;
     pos.x *= aspect;
 
     float3 camPos = float3(-0.5,0.0,3.0);
     float3 camDir = normalize(float3(0.3, 0.0, -1.0));
-    camPos -=  float3(0.0,0.0,time*60.0);
+    camPos -=  float3(0.0,0.0,time*2.0);
     float3 camUp  = normalize(float3(0.5, 1.0, 0.0));
     float3 camSide = cross(camDir, camUp);
     float focus = 1.8;
