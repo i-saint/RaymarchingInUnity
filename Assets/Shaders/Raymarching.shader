@@ -1,16 +1,19 @@
-﻿Shader "Custom/Raymarching" {
+﻿Shader "Custom/DistanceFunctions" {
 
 Properties {
-	_Aspect ("Aspect", Float) = 1.0
+	_BaseColor ("BaseColor", Color) = (0.15, 0.15, 0.2, 1.0)
+	_GlowColor ("GlowColor", Color) = (0.75, 0.75, 1.0, 1.0)
 }
 SubShader {
 	Tags { "RenderType"="Opaque" }
 
 	CGINCLUDE
-	float _Aspect;
-
+	#pragma target 3.0
 	#include "UnityCG.cginc"
-	#include "Raymarching.cginc"
+
+	float4 _BaseColor;
+	float4 _GlowColor;
+	#include "Scene1.cginc"
 
 	struct appdata_t {
 		float4 vertex : POSITION;
@@ -30,14 +33,12 @@ SubShader {
 	float4 frag (v2f i) : SV_Target
 	{
 		float4 pos = i.spos / i.spos.w;
-		return main(pos.xy);
-		//return float4(abs(pos.xxx), 1.0);
+		return Scene1(pos.xy);
 	}
 	ENDCG
 
 	Pass {
 		CGPROGRAM
-		#pragma target 3.0
 		#pragma vertex vert
 		#pragma fragment frag
 		ENDCG
