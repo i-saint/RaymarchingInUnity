@@ -1,6 +1,7 @@
 ﻿Shader "Custom/DistanceFunctions" {
 
 Properties {
+	_Scene ("Scene", Int) = 0
 	_BaseColor ("BaseColor", Color) = (0.15, 0.15, 0.2, 1.0)
 	_GlowColor ("GlowColor", Color) = (0.75, 0.75, 1.0, 1.0)
 }
@@ -11,9 +12,16 @@ SubShader {
 	#pragma target 3.0
 	#include "UnityCG.cginc"
 
+	int _Scene;
 	float4 _BaseColor;
 	float4 _GlowColor;
+
+	#include "GLSLCompat.cginc"
+	#include "DistanceFunctions.cginc"
 	#include "Scene1.cginc"
+	#include "Scene2.cginc"
+	#include "Scene3.cginc"
+	#include "Scene4.cginc"
 
 	struct appdata_t {
 		float4 vertex : POSITION;
@@ -33,7 +41,14 @@ SubShader {
 	float4 frag (v2f i) : SV_Target
 	{
 		float4 pos = i.spos / i.spos.w;
-		return Scene1(pos.xy);
+		float4 ret = float4(1,1,1,1);
+		switch(_Scene%4) {
+		case 0: ret=Scene1(pos.xy); break;
+		case 1: ret=Scene2(pos.xy); break;
+		case 2: ret=Scene3(pos.xy); break;
+		case 3: ret=Scene4(pos.xy); break;
+		}
+		return ret;
 	}
 	ENDCG
 
