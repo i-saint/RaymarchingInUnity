@@ -19,10 +19,10 @@ float DE4(float3 p)
     float d1 = p.y + h + rxz.x*rh;
     float d2 = p.y + h + ryz.y*rh;
 
-    float2 p1 = mod(p.xz, grid) - grid_half;
+    float2 p1 = modc(p.xz, grid) - grid_half;
     float c1 = sdHexPrism(float2(p1.x,p1.y), float2(radius,radius));
 
-    float2 p2 = mod(p.xz+grid_half, grid) - float2(grid_half);
+    float2 p2 = modc(p.xz+grid_half, grid) - float2(grid_half);
     float c2 = sdHexPrism(float2(p2.x,p2.y), float2(radius,radius));
 
     float dz = (grid.y*g1.y - p.z + 0.1)*0.5;
@@ -88,8 +88,8 @@ float4 Scene4(float2 pos)
     }
     {
         float3 p = ray;
-        float grid1 = max(0.0, max((mod((p.x+p.y+p.z*2.0)-time*3.0, 5.0)-4.0)*1.5, 0.0) );
-        float grid2 = max(0.0, max((mod((p.x+p.y*2.0+p.z)-time*2.0, 7.0)-6.0)*1.2, 0.0) );
+        float grid1 = max(0.0, max((modc((p.x+p.y+p.z*2.0)-time*3.0, 5.0)-4.0)*1.5, 0.0) );
+        float grid2 = max(0.0, max((modc((p.x+p.y*2.0+p.z)-time*2.0, 7.0)-6.0)*1.2, 0.0) );
         sn = sn*0.2 + sn*(grid1+grid2)*1.0;
     }
     glow += sn;
@@ -97,6 +97,6 @@ float4 Scene4(float2 pos)
     float fog = min(1.0, (1.0 / float(MAX_MARCH)) * float(march))*1.0;
     float3  fog2 = 0.005 * float3(1, 1, 1.5) * total_d;
     glow *= min(1.0, 4.0-(4.0 / float(MAX_MARCH-1)) * float(march));
-    float scanline = mod(screen_pos.y, 4.0) < 2.0 ? 0.7 : 1.0;
+    float scanline = modc(screen_pos.y, 4.0) < 2.0 ? 0.7 : 1.0;
     return float4(float3(0.15+glow*0.75, 0.15+glow*0.75, 0.2+glow)*fog + fog2, 1.0) * scanline;
 }

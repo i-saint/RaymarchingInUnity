@@ -1,3 +1,8 @@
+// GLSL compatible mod()
+float  modc(float  a, float  b) { return a - b * floor(a/b); }
+float2 modc(float2 a, float2 b) { return a - b * floor(a/b); }
+float3 modc(float3 a, float3 b) { return a - b * floor(a/b); }
+float4 modc(float4 a, float4 b) { return a - b * floor(a/b); }
 
 
 float sdBox( float3 p, float3 b )
@@ -28,8 +33,8 @@ float sdHexPrism( float2 p, float2 h )
 
 float3 nrand3( float2 co )
 {
-	float3 a = fract( cos( co.x*8.3e-3 + co.y )*float3(1.3e5, 4.7e5, 2.9e5) );
-	float3 b = fract( sin( co.x*0.3e-3 + co.y )*float3(8.1e5, 1.0e5, 0.1e5) );
-	float3 c = mix(a, b, 0.5);
+	float3 a = frac( cos( co.x*8.3e-3 + co.y )*float3(1.3e5, 4.7e5, 2.9e5) );
+	float3 b = frac( sin( co.x*0.3e-3 + co.y )*float3(8.1e5, 1.0e5, 0.1e5) );
+	float3 c = lerp(a, b, 0.5);
 	return c;
 }

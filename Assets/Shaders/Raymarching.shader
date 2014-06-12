@@ -10,6 +10,9 @@ SubShader {
 
 	CGINCLUDE
 	#pragma target 3.0
+	#pragma glsl
+	#pragma profileoption NumTemps=128
+
 	#include "UnityCG.cginc"
 
 	int _Scene;
@@ -42,12 +45,12 @@ SubShader {
 	{
 		float4 pos = i.spos / i.spos.w;
 		float4 ret = float4(1,1,1,1);
-		switch(_Scene%4) {
-		case 0: ret=Scene1(pos.xy); break;
-		case 1: ret=Scene2(pos.xy); break;
-		case 2: ret=Scene3(pos.xy); break;
-		case 3: ret=Scene4(pos.xy); break;
-		}
+
+		int s = _Scene%4;
+		if(s==0) { ret=Scene1(pos.xy); }
+		if(s==1) { ret=Scene2(pos.xy); }
+		if(s==2) { ret=Scene3(pos.xy); }
+		if(s==3) { ret=Scene4(pos.xy); }
 		return ret;
 	}
 	ENDCG

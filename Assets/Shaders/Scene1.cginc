@@ -16,16 +16,16 @@ float DE1(float3 p)
     float3 di = ceil(p/4.8);
     p.y += di.x*1.0;
     p.x += di.y*1.2;
-    p.xy = mod(p.xy, -4.8);
+    p.xy = modc(p.xy, -4.8);
 
     float2 gap = float2(rxz.x*rh, ryz.y*rh);
     float d1 = p.y + h + gap.x;
     float d2 = p.x + h + gap.y;
 
-    float2 p1 = mod(p.xz, float2(grid,grid)) - float2(grid_half,grid_half);
+    float2 p1 = modc(p.xz, float2(grid,grid)) - float2(grid_half,grid_half);
     float c1 = sdBox(p1,float2(cube,cube));
 
-    float2 p2 = mod(p.yz, float2(grid,grid)) - float2(grid_half,grid_half);
+    float2 p2 = modc(p.yz, float2(grid,grid)) - float2(grid_half,grid_half);
     float c2 = sdBox(p2,float2(cube,cube));
 
     return max(max(c1,d1), max(c2,d2));
@@ -90,10 +90,10 @@ float4 Scene1(float2 pos)
     }
     {
         float3 p = ray;
-        float grid1 = max(0.0, max((mod((p.x+p.y+p.z*2.0)-time*3.0, 5.0)-4.0)*1.5, 0.0) );
-        float grid2 = max(0.0, max((mod((p.x+p.y*2.0+p.z)-time*2.0, 7.0)-6.0)*1.2, 0.0) );
-        float3 gp1 = abs(mod(p, float3(0.24,0.24,0.24)));
-        float3 gp2 = abs(mod(p, float3(0.32,0.32,0.32)));
+        float grid1 = max(0.0, max((modc((p.x+p.y+p.z*2.0)-time*3.0, 5.0)-4.0)*1.5, 0.0) );
+        float grid2 = max(0.0, max((modc((p.x+p.y*2.0+p.z)-time*2.0, 7.0)-6.0)*1.2, 0.0) );
+        float3 gp1 = abs(modc(p, float3(0.24,0.24,0.24)));
+        float3 gp2 = abs(modc(p, float3(0.32,0.32,0.32)));
         if(gp1.x<0.23 && gp1.z<0.23) {
             grid1 = 0.0;
         }
@@ -106,6 +106,6 @@ float4 Scene1(float2 pos)
     float fog = min(1.0, (1.0 / float(MAX_MARCH)) * float(march))*1.0;
     float3  fog2 = 0.01 * float3(1, 1, 1.5) * total_d;
     glow *= min(1.0, 4.0-(4.0 / float(MAX_MARCH-1)) * float(march));
-    float scanline = mod(screen_pos.y, 4.0) < 2.0 ? 0.7 : 1.0;
+    float scanline = modc(screen_pos.y, 4.0) < 2.0 ? 0.7 : 1.0;
     return float4((_BaseColor.rgb + _GlowColor.rgb*glow)*fog + fog2, 1.0) * scanline;
 }
